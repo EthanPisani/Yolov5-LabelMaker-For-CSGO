@@ -22,7 +22,7 @@ float boxHeightModifier = 1.2;
 int imgCnt = 0;
 
 int timer = SCREENSHOT_DELAY + 1;
-
+bool autoCapture = false;
 
 void MainLoop(LPDIRECT3DDEVICE9 lpD3D9Device)
 {
@@ -30,10 +30,19 @@ void MainLoop(LPDIRECT3DDEVICE9 lpD3D9Device)
         isHackUninstall = true;
     }
 
+    /*
     if ((GetAsyncKeyState(VK_HOME) & 0x01) || (GetAsyncKeyState(MOUSE_WHEELED) & 0x01)) {
         timer = 0;
         LOG("Saved a screenshot!");
         return;
+    }
+    */
+
+    //toggle auto capture
+    if ((GetAsyncKeyState(VK_HOME) & 0x01)) {
+        autoCapture = !autoCapture;
+        
+        
     }
 
     if (GetAsyncKeyState(VK_NUMPAD8) & 0x01) {
@@ -43,6 +52,13 @@ void MainLoop(LPDIRECT3DDEVICE9 lpD3D9Device)
     if (GetAsyncKeyState(VK_NUMPAD2) & 0x01) {
         boxHeightModifier -= 0.1;
     }
+
+    if (autoCapture) {
+        if (timer >= SCREENSHOT_DELAY+1) {
+            timer = 0;
+        }
+    }
+
 
     timer++;
     if (timer == SCREENSHOT_DELAY) {
